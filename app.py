@@ -1,32 +1,50 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from ollama import chat
+from groq import Groq
+import os
 from intent import get_intent_sql
 
 app = FastAPI()
 
-class Question(BaseModel):
-    question: str
+client = Groq(
+api_key=os.getenv("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")
+)
 
+class Question(BaseModel):
+question: str
+
+@app.get("/")
+def home():
+return {"status": "running"}
 
 @app.post("/query")
 def query(data: Question):
 
-    question = data.question
-    print("QUESTION:", question)
+```
+question = data.question
+print("QUESTION:", question)
 
-    sql_query = get_intent_sql(question.lower())
+sql_query = get_intent_sql(question.lower())
 
-    if sql_query:
-        print("INTENT MATCHED")
-        return {"sql": sql_query}
+if sql_query:
+    print("INTENT MATCHED")
+    return {"sql": sql_query}
 
-    print("CALLING OLLAMA")
+print("CALLING GROQ")
 
-    try:
+try:
 
-        prompt = f"""
+    prompt = f"""
+```
+
 Generate only MySQL query.
+
+Rules:
+
+1. Return only SQL query.
+2. Do not return explanation.
+3. Do not use markdown.
+4. Table name is consumer_nlpdata.
 
 Table: consumer_nlpdata
 
@@ -50,31 +68,35 @@ Question:
 {question}
 """
 
-        response = chat(
-            model="phi3:mini",
-            messages=[
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ]
-        )
+````
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ],
+        temperature=0
+    )
 
-        print("OLLAMA RESPONSE:", response)
+    sql_query = response.choices[0].message.content
 
-        sql_query = response["message"]["content"]
-        sql_query = sql_query.replace("```sql", "")
-        sql_query = sql_query.replace("```", "")
-        sql_query = sql_query.strip()
+    sql_query = sql_query.replace("```sql", "")
+    sql_query = sql_query.replace("```", "")
+    sql_query = sql_query.strip()
 
-        return {
-            "sql": sql_query
-        }
+    print("GROQ SQL:", sql_query)
 
-    except Exception as e:
+    return {
+        "sql": sql_query
+    }
 
-        print("OLLAMA ERROR:", str(e))
+except Exception as e:
 
-        return {
-            "error": str(e)
-        }
+    print("GROQ ERROR:", str(e))
+
+    return {
+        "error": str(e)
+    }
+````
