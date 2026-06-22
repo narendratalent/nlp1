@@ -20,7 +20,7 @@ def query(data: Question):
         prompt = f"""
 Generate only MySQL query.
 
-Table: consumer_data
+Table: consumer_nlpdata
 
 Question:
 {question}
