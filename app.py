@@ -7,8 +7,9 @@ from intent import get_intent_sql
 app = FastAPI()
 
 client = Groq(
-    api_key=os.getenv("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")
+    api_key=os.getenv("GROQ_API_KEY")
 )
+
 
 class Question(BaseModel):
     question: str
