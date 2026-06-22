@@ -7,44 +7,36 @@ from intent import get_intent_sql
 app = FastAPI()
 
 client = Groq(
-api_key=os.getenv("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")
+    api_key=os.getenv("GROQ_API_KEY")
 )
 
 class Question(BaseModel):
-question: str
+    question: str
+
 
 @app.get("/")
 def home():
-return {"status": "running"}
+    return {"status": "running"}
+
 
 @app.post("/query")
 def query(data: Question):
 
-```
-question = data.question
-print("QUESTION:", question)
+    question = data.question
+    print("QUESTION:", question)
 
-sql_query = get_intent_sql(question.lower())
+    sql_query = get_intent_sql(question.lower())
 
-if sql_query:
-    print("INTENT MATCHED")
-    return {"sql": sql_query}
+    if sql_query:
+        print("INTENT MATCHED")
+        return {"sql": sql_query}
 
-print("CALLING GROQ")
+    print("CALLING GROQ")
 
-try:
+    try:
 
-    prompt = f"""
-```
-
+        prompt = f"""
 Generate only MySQL query.
-
-Rules:
-
-1. Return only SQL query.
-2. Do not return explanation.
-3. Do not use markdown.
-4. Table name is consumer_nlpdata.
 
 Table: consumer_nlpdata
 
@@ -68,35 +60,28 @@ Question:
 {question}
 """
 
-````
-    response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=[
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ],
-        temperature=0
-    )
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            temperature=0
+        )
 
-    sql_query = response.choices[0].message.content
+        sql_query = response.choices[0].message.content.strip()
 
-    sql_query = sql_query.replace("```sql", "")
-    sql_query = sql_query.replace("```", "")
-    sql_query = sql_query.strip()
+        sql_query = sql_query.replace("```sql", "")
+        sql_query = sql_query.replace("```", "")
 
-    print("GROQ SQL:", sql_query)
+        print("GROQ SQL:", sql_query)
 
-    return {
-        "sql": sql_query
-    }
+        return {"sql": sql_query}
 
-except Exception as e:
+    except Exception as e:
 
-    print("GROQ ERROR:", str(e))
+        print("GROQ ERROR:", str(e))
 
-    return {
-        "error": str(e)
-    }
-````
+        return {"error": str(e)}
