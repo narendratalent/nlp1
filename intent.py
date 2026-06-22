@@ -60,7 +60,7 @@ def get_intent_sql(question):
                 consumer_status,
                 arrear,
                 net_bill
-            FROM consumer_data
+            FROM consumer_nlpdata
             WHERE arrear > {amount}
             {status_condition}
             ORDER BY arrear DESC
@@ -86,7 +86,7 @@ def get_intent_sql(question):
                consumer_no,consumer_name,
                address1,address2,
                mobile_no,arrear,net_bill
-        FROM consumer_data
+        FROM consumer_nlpdata
         ORDER BY arrear DESC
         LIMIT 10
         """
@@ -106,7 +106,7 @@ def get_intent_sql(question):
                consumer_no,consumer_name,
                address1,address2,
                mobile_no,arrear,net_bill
-        FROM consumer_data
+        FROM consumer_nlpdata
         WHERE consumer_status IN ('INACTIVE','PDC')
         ORDER BY arrear DESC
         LIMIT 10
@@ -127,7 +127,7 @@ def get_intent_sql(question):
                consumer_no,consumer_name,
                address1,address2,
                mobile_no,arrear,net_bill
-        FROM consumer_data
+        FROM consumer_nlpdata
         WHERE consumer_status IN ('ACTIVE','CONNECTED')
         ORDER BY arrear DESC
         LIMIT 10
@@ -147,7 +147,7 @@ def get_intent_sql(question):
                consumer_no,consumer_name,
                address1,address2,
                mobile_no,net_bill
-        FROM consumer_data
+        FROM consumer_nlpdata
         ORDER BY net_bill DESC
         LIMIT 10
         """
