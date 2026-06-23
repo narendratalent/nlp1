@@ -76,14 +76,16 @@ FDRTYPE
 
 Rules:
 
-1. Return only MySQL query.
-2. Use LIKE with wildcards (%) when searching feeder names FDR.
-3. Use LIKE with wildcards (%) when searching transformer (DTR) names DTR.
-4. Use LIKE with wildcards (%) when searching DC NAME (DC) names.
-5. Use LIKE with wildcards (%) when searching SUBSTATION NAME (SS) SUB STATION names.
-6. Use = only for exact codes such as consumer_no, FDRID, DTRID, DCID,DIVCODE.
-7. Ignore case while searching names.
-8. Do not explain anything.
+1. Return only a valid MySQL query.
+2. Never return explanations, comments, markdown, or code fences.
+3. Never use JOIN, INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL JOIN, CROSS JOIN, or any subquery involving multiple tables.
+4. Use only one table per query.
+5. Use LIKE with wildcards (%) when searching feeder names (FDR, FEEDER_NAME).
+6. Use LIKE with wildcards (%) when searching transformer names (DTR, DTR_NAME).
+7. Use LIKE with wildcards (%) when searching DC names (DC, DC_NAME).
+8. Use LIKE with wildcards (%) when searching substation names (SS, SUBSTATION_NAME, SUB STATION).
+9. Use LIKE with wildcards (%) when searching consumer names.
+10. Use exact match (=) only for codes and IDs such as:
 
 Question:
 {question}
