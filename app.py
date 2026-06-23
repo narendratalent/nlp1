@@ -80,9 +80,10 @@ Rules:
 2. Use LIKE with wildcards (%) when searching feeder names FDR.
 3. Use LIKE with wildcards (%) when searching transformer (DTR) names DTR.
 4. Use LIKE with wildcards (%) when searching DC NAME (DC) names.
-5. Use = only for exact codes such as consumer_no, FDRID, DTRID, DCID,DIVCODE.
-6. Ignore case while searching names.
-7. Do not explain anything.
+5. Use LIKE with wildcards (%) when searching SUBSTATION NAME (SS) SUB STATION names.
+6. Use = only for exact codes such as consumer_no, FDRID, DTRID, DCID,DIVCODE.
+7. Ignore case while searching names.
+8. Do not explain anything.
 
 Question:
 {question}
