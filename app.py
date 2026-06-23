@@ -74,6 +74,15 @@ POLELAT
 POLELONG
 FDRTYPE
 
+Rules:
+
+1. Return only MySQL query.
+2. Use LIKE with wildcards (%) when searching feeder names.
+3. Use LIKE with wildcards (%) when searching transformer (DTR) names.
+4. Use = only for exact codes such as consumer_no, FDRID, DTRID.
+5. Ignore case while searching names.
+6. Do not explain anything.
+
 Question:
 {question}
 """
