@@ -57,6 +57,23 @@ net_bill
 arrear
 billed_unit
 
+Table: patandfrdtr
+Description : FEEDER WISE DTR DETAIL, DTR MEANS TRANSFORMER WITH COORDINATE LATITUDE LONGITUDE
+Columns:
+DIVCODE
+DCID
+DC
+SS
+FDR
+FDRID
+DTRID
+DTR
+DTRCP
+DTRCAP
+POLELAT
+POLELONG
+FDRTYPE
+
 Question:
 {question}
 """
