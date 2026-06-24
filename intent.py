@@ -3,7 +3,6 @@ import re
 def get_intent_sql(question):
 
     print(question)
-
     question = question.lower()
 
     # ==========================
@@ -21,17 +20,14 @@ def get_intent_sql(question):
 
         amount = None
 
-        # 1 lakh, 2 lakh, 5 lakh
         lakh_match = re.search(r'(\d+)\s*lakh', question)
         if lakh_match:
             amount = int(lakh_match.group(1)) * 100000
 
-        # 10 thousand, 25 thousand
         thousand_match = re.search(r'(\d+)\s*thousand', question)
         if thousand_match:
             amount = int(thousand_match.group(1)) * 1000
 
-        # 5000, 10000, 25000
         if amount is None:
             number_match = re.search(r'(\d+)', question)
             if number_match:
@@ -134,77 +130,74 @@ def get_intent_sql(question):
         """
 
     # ==========================
-
-# ANOMALY CONSUMERS
-
-# ==========================
+    # ANOMALY CONSUMERS
+    # ==========================
 
     elif (
-            "anomaly" in question
-            or "abnormal" in question
-            or "unusual" in question
-            or ("low" in question and "consumption" in question)
-            or ("high" in question and "consumption" in question)
-        ):
+        "anomaly" in question
+        or "abnormal" in question
+        or "unusual" in question
+        or ("low" in question and "consumption" in question)
+        or ("high" in question and "consumption" in question)
+    ):
 
+        if "low" in question:
 
-    if "low" in question:
-
-        return """
-        SELECT
+            return """
+            SELECT
                 consumer_no,
                 consumer_name,
                 sanctioned_load,
                 total_unit,
                 (sanctioned_load * 150) AS expected_unit,
                 'LOW' AS anomaly_type
-        FROM consumer_nlpdata
-        WHERE total_unit < (sanctioned_load * 150 * 0.5)
-        ORDER BY total_unit ASC
-        """
+            FROM consumer_nlpdata
+            WHERE total_unit < (sanctioned_load * 150 * 0.5)
+            ORDER BY total_unit ASC
+            """
 
-    elif "high" in question:
+        elif "high" in question:
 
-        return """
-        SELECT
-            consumer_no,
-            consumer_name,
-            sanctioned_load,
-            total_unit,
-            (sanctioned_load * 150) AS expected_unit,
-            'HIGH' AS anomaly_type
-        FROM consumer_nlpdata
-        WHERE total_unit > (sanctioned_load * 150 * 1.5)
-        ORDER BY total_unit DESC
-        """
+            return """
+            SELECT
+                consumer_no,
+                consumer_name,
+                sanctioned_load,
+                total_unit,
+                (sanctioned_load * 150) AS expected_unit,
+                'HIGH' AS anomaly_type
+            FROM consumer_nlpdata
+            WHERE total_unit > (sanctioned_load * 150 * 1.5)
+            ORDER BY total_unit DESC
+            """
 
-    else:
+        else:
 
-        return """
-        SELECT
-            consumer_no,
-            consumer_name,
-            sanctioned_load,
-            total_unit,
-            (sanctioned_load * 150) AS expected_unit,
-            CASE
-                WHEN total_unit < (sanctioned_load * 150 * 0.5)
-                    THEN 'LOW'
-                WHEN total_unit > (sanctioned_load * 150 * 1.5)
-                    THEN 'HIGH'
-            END AS anomaly_type
-        FROM consumer_nlpdata
-        WHERE total_unit < (sanctioned_load * 150 * 0.5)
-        OR total_unit > (sanctioned_load * 150 * 1.5)
-        ORDER BY total_unit DESC
-        """
+            return """
+            SELECT
+                consumer_no,
+                consumer_name,
+                sanctioned_load,
+                total_unit,
+                (sanctioned_load * 150) AS expected_unit,
+                CASE
+                    WHEN total_unit < (sanctioned_load * 150 * 0.5)
+                        THEN 'LOW'
+                    WHEN total_unit > (sanctioned_load * 150 * 1.5)
+                        THEN 'HIGH'
+                END AS anomaly_type
+            FROM consumer_nlpdata
+            WHERE total_unit < (sanctioned_load * 150 * 0.5)
+               OR total_unit > (sanctioned_load * 150 * 1.5)
+            ORDER BY total_unit DESC
+            """
 
     # ==========================
     # TOP BILL CONSUMERS
     # ==========================
 
     elif (
-        ("bill" in question)
+        "bill" in question
         and ("top" in question or "highest" in question or "maximum" in question)
     ):
 
@@ -217,19 +210,20 @@ def get_intent_sql(question):
         ORDER BY net_bill DESC
         LIMIT 10
         """
+
     # ==========================
-# METER REPLACEMENT REQUIRED
-# ==========================
+    # METER REPLACEMENT REQUIRED
+    # ==========================
 
     elif (
         "meter replacement" in question
         or "replace meter" in question
         or "meter need replacement" in question
         or "old meter with assessment" in question
-        ):
+    ):
 
-    return """
-    SELECT
+        return """
+        SELECT
             consumer_no,
             consumer_name,
             sanctioned_load,
