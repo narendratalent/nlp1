@@ -85,7 +85,57 @@ Rules:
 7. Use LIKE with wildcards (%) when searching DC names (DC, DC_NAME).
 8. Use LIKE with wildcards (%) when searching substation names (SS, SUBSTATION_NAME, SUB STATION).
 9. Use LIKE with wildcards (%) when searching consumer names.
-10. Use exact match (=) only for codes and IDs such as:
+10. Use exact match (=) only for codes and IDs such as consumer_no, FDRID, DTRID, location_code, tariff_category.
+
+Location Code Mapping:
+
+* Patan1 = 1444410
+* Patan2 = 1444415
+* Shahpura = 1444420
+* Belkheda = 1444425
+* Boriya = 1444460
+* Katangi = 1444465
+
+Location Rules:
+
+* Never search location names directly.
+* Always convert location names to location_code.
+* If user mentions Patan1, use: location_code = '1444410'
+* If user mentions Patan2, use: location_code = '1444415'
+* If user mentions Shahpura, use: location_code = '1444420'
+* If user mentions Belkheda, use: location_code = '1444425'
+* If user mentions Boriya, use: location_code = '1444460'
+* If user mentions Katangi, use: location_code = '1444465'
+
+Tariff Category Mapping:
+
+* Domestic, Gharelu = LV1
+* Non Domestic, CLF = LV2
+* Street Light, STLT, Water Works, WW, Nagar Nigam = LV3
+* Industrial, IP = LV4
+* Agriculture, Pump = LV5
+* EV Station, Electric Charging = LV6
+
+Tariff Rules:
+
+* Never search tariff names directly.
+* Always convert tariff names to tariff_category.
+* Domestic or Gharelu → tariff_category = 'LV1'
+* Non Domestic or CLF → tariff_category = 'LV2'
+* Street Light, STLT, Water Works, WW, Nagar Nigam → tariff_category = 'LV3'
+* Industrial or IP → tariff_category = 'LV4'
+* Agriculture or Pump → tariff_category = 'LV5'
+* EV Station or Electric Charging → tariff_category = 'LV6'
+
+Query Construction Rules:
+
+* If multiple filters are mentioned, combine them using AND.
+* Use COUNT(*) for total/count questions.
+* Use SUM(net_bill) for bill total questions.
+* Use SUM(arrear) for arrear total questions.
+* Use ORDER BY and LIMIT when user asks for top/highest/lowest records.
+* Generate only executable MySQL query output.
+
 
 Question:
 {question}
