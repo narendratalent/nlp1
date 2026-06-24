@@ -139,65 +139,65 @@ def get_intent_sql(question):
 
 # ==========================
 
-elif (
-"anomaly" in question
-or "abnormal" in question
-or "unusual" in question
-or ("low" in question and "consumption" in question)
-or ("high" in question and "consumption" in question)
-):
+    elif (
+            "anomaly" in question
+            or "abnormal" in question
+            or "unusual" in question
+            or ("low" in question and "consumption" in question)
+            or ("high" in question and "consumption" in question)
+        ):
 
-```
-if "low" in question:
 
-    return """
-    SELECT
-        consumer_no,
-        consumer_name,
-        sanctioned_load,
-        total_unit,
-        (sanctioned_load * 150) AS expected_unit,
-        'LOW' AS anomaly_type
-    FROM consumer_nlpdata
-    WHERE total_unit < (sanctioned_load * 150 * 0.5)
-    ORDER BY total_unit ASC
-    """
+    if "low" in question:
 
-elif "high" in question:
+        return """
+        SELECT
+                consumer_no,
+                consumer_name,
+                sanctioned_load,
+                total_unit,
+                (sanctioned_load * 150) AS expected_unit,
+                'LOW' AS anomaly_type
+        FROM consumer_nlpdata
+        WHERE total_unit < (sanctioned_load * 150 * 0.5)
+        ORDER BY total_unit ASC
+        """
 
-    return """
-    SELECT
-        consumer_no,
-        consumer_name,
-        sanctioned_load,
-        total_unit,
-        (sanctioned_load * 150) AS expected_unit,
-        'HIGH' AS anomaly_type
-    FROM consumer_nlpdata
-    WHERE total_unit > (sanctioned_load * 150 * 1.5)
-    ORDER BY total_unit DESC
-    """
+    elif "high" in question:
 
-else:
+        return """
+        SELECT
+            consumer_no,
+            consumer_name,
+            sanctioned_load,
+            total_unit,
+            (sanctioned_load * 150) AS expected_unit,
+            'HIGH' AS anomaly_type
+        FROM consumer_nlpdata
+        WHERE total_unit > (sanctioned_load * 150 * 1.5)
+        ORDER BY total_unit DESC
+        """
 
-    return """
-    SELECT
-        consumer_no,
-        consumer_name,
-        sanctioned_load,
-        total_unit,
-        (sanctioned_load * 150) AS expected_unit,
-        CASE
-            WHEN total_unit < (sanctioned_load * 150 * 0.5)
-                THEN 'LOW'
-            WHEN total_unit > (sanctioned_load * 150 * 1.5)
-                THEN 'HIGH'
-        END AS anomaly_type
-    FROM consumer_nlpdata
-    WHERE total_unit < (sanctioned_load * 150 * 0.5)
-       OR total_unit > (sanctioned_load * 150 * 1.5)
-    ORDER BY total_unit DESC
-    """
+    else:
+
+        return """
+        SELECT
+            consumer_no,
+            consumer_name,
+            sanctioned_load,
+            total_unit,
+            (sanctioned_load * 150) AS expected_unit,
+            CASE
+                WHEN total_unit < (sanctioned_load * 150 * 0.5)
+                    THEN 'LOW'
+                WHEN total_unit > (sanctioned_load * 150 * 1.5)
+                    THEN 'HIGH'
+            END AS anomaly_type
+        FROM consumer_nlpdata
+        WHERE total_unit < (sanctioned_load * 150 * 0.5)
+        OR total_unit > (sanctioned_load * 150 * 1.5)
+        ORDER BY total_unit DESC
+        """
 
     # ==========================
     # TOP BILL CONSUMERS
@@ -221,26 +221,26 @@ else:
 # METER REPLACEMENT REQUIRED
 # ==========================
 
-elif (
-    "meter replacement" in question
-    or "replace meter" in question
-    or "meter need replacement" in question
-    or "old meter with assessment" in question
-):
+    elif (
+        "meter replacement" in question
+        or "replace meter" in question
+        or "meter need replacement" in question
+        or "old meter with assessment" in question
+        ):
 
-return """
-SELECT
-        consumer_no,
-        consumer_name,
-        sanctioned_load,
-        current_reading,
-        assessment,
-        (sanctioned_load * 200 * 60) AS meter_threshold,
-        'METER_REPLACEMENT_REQUIRED' AS meter_status
-    FROM consumer_nlpdata
-    WHERE current_reading >= (sanctioned_load * 200 * 60)
-      AND assessment > 0
-    ORDER BY assessment DESC
-    """
+    return """
+    SELECT
+            consumer_no,
+            consumer_name,
+            sanctioned_load,
+            current_reading,
+            assessment,
+            (sanctioned_load * 200 * 60) AS meter_threshold,
+            'METER_REPLACEMENT_REQUIRED' AS meter_status
+        FROM consumer_nlpdata
+        WHERE current_reading >= (sanctioned_load * 200 * 60)
+          AND assessment > 0
+        ORDER BY assessment DESC
+        """
 
     return None
