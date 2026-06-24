@@ -219,5 +219,30 @@ else:
         ORDER BY net_bill DESC
         LIMIT 10
         """
+    # ==========================
+# METER REPLACEMENT REQUIRED
+# ==========================
+
+elif (
+    "meter replacement" in question
+    or "replace meter" in question
+    or "meter need replacement" in question
+    or "old meter with assessment" in question
+):
+
+    return """
+    SELECT
+        consumer_no,
+        consumer_name,
+        sanctioned_load,
+        current_reading,
+        assessment,
+        (sanctioned_load * 200 * 60) AS meter_threshold,
+        'METER_REPLACEMENT_REQUIRED' AS meter_status
+    FROM consumer_nlpdata
+    WHERE current_reading >= (sanctioned_load * 200 * 60)
+      AND assessment > 0
+    ORDER BY assessment DESC
+    """
 
     return None
