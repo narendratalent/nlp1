@@ -198,8 +198,6 @@ else:
        OR total_unit > (sanctioned_load * 150 * 1.5)
     ORDER BY total_unit DESC
     """
-```
-
 
     # ==========================
     # TOP BILL CONSUMERS
@@ -230,8 +228,8 @@ elif (
     or "old meter with assessment" in question
 ):
 
-    return """
-    SELECT
+return """
+SELECT
         consumer_no,
         consumer_name,
         sanctioned_load,
