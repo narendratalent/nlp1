@@ -221,11 +221,9 @@ SQL:
 SELECT * FROM vigillance
 WHERE mobile_no LIKE '%9876543210%';
 
-User: Show cases inspected in 2025
+User: Show panchanama between 01-04-2024 to 01-04-2025
 SQL:
-SELECT * FROM vigillance
-WHERE YEAR(inspection_date)=2025;
-
+SELECT * FROM vigillance WHERE inspection_date BETWEEN '01-04-2024' AND '01-04-2025'
 
 Question:
 {question}
