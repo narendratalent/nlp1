@@ -204,7 +204,7 @@ WHERE division LIKE '%Patan%';
 User: Show all consumers from Patan1 dc or patan 1 dc
 SQL:
 SELECT * FROM vigillance
-WHERE dc LIKE '%patan1%';
+WHERE dc LIKE '%patan-1%';
 
 User: Show billed amount greater than 50000
 SQL:
