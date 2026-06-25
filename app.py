@@ -135,7 +135,9 @@ Query Construction Rules:
 * Use SUM(arrear) for arrear total questions.
 * Use ORDER BY and LIMIT when user asks for top/highest/lowest records.
 * Generate only executable MySQL query output.
+
 Table: vigillance
+description: vigillance means enforcement detail or panchnama
 
 Columns:
 
@@ -190,6 +192,7 @@ Rules:
 22. For civil liability amount use column civil_lia_amount.
 23. For compounding amount use column compounding_amount.
 24. For court rebate use column court_rebate.
+25. 3. Use LIKE '%value%' for panchnama number searches.
 
 Examples:
 
@@ -197,6 +200,11 @@ User: Show all consumers from Patan division
 SQL:
 SELECT * FROM vigillance
 WHERE division LIKE '%Patan%';
+
+User: Show all consumers from Patan1 dc or patan 1 dc
+SQL:
+SELECT * FROM vigillance
+WHERE dc LIKE '%patan1%';
 
 User: Show billed amount greater than 50000
 SQL:
