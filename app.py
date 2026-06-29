@@ -40,7 +40,7 @@ def query(data: Question):
 Generate only MySQL query.
 
 Table: consumer_nlpdata
-Description : DC WISE, LOCATION WISE, BILLING, ARREAR,UNIT, PAYMENT DATA
+Description : DC WISE, LOCATION WISE, BILLING, ARREAR,UNIT, PAYMENT DATA, feeder id, dtr id
 Columns:
 consumer_no
 division
@@ -56,6 +56,8 @@ mobile_no
 net_bill
 arrear
 billed_unit
+feeder_name
+dtr_name
 
 Table: patandfrdtr
 Description : FEEDER WISE DTR DETAIL, DTR MEANS TRANSFORMER,SS MEANS SUBSTATION, DC MEANS DC NAME WITH COORDINATE LATITUDE LONGITUDE
