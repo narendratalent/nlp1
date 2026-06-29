@@ -38,61 +38,51 @@ def query(data: Question):
 
         prompt = f"""
 Generate only MySQL query.
-Location Code Mapping:
+# MySQL SQL Generation Rules
 
-* Patan1 or patan 1 or patan-1 = 1444410
-* Patan2, Patan 2, Patan-2 = 1444415
-* Shahpura = 1444420
-* Belkheda = 1444425
-* Boriya = 1444460
-* Katangi = 1444465
+## General Rules
 
-Location Rules:
+1. Return only a valid executable MySQL SELECT query.
+2. Never return explanations, comments, markdown or code fences.
+3. Never generate INSERT, UPDATE, DELETE, DROP, ALTER, CREATE or TRUNCATE queries.
+4. Never generate multiple SQL statements.
+5. Use only the tables listed below.
+6. Never use columns that are not listed.
+7. If multiple conditions are given, combine them using AND.
+8. Use ORDER BY and LIMIT only when the user asks for top, highest, lowest, first or last records.
+9. Use COUNT(*) for count or total consumer questions.
+10. Use SUM() for total amount, bill, arrear or unit questions.
+11. Use LIKE '%value%' for text searches.
+12. Use = only for IDs and codes.
+13. Never guess column names.
+14. Generate only executable SQL.
 
-* Never search location names directly.
-* Always convert location names to location_code.
-* If user mentions Patan1 or patan 1 or patan-1, use: location_code = '1444410'
-* If user mentions Patan2 or patan 2 or patan-2 use: location_code = '1444415'
-* If user mentions Shahpura, use: location_code = '1444420'
-* If user mentions Belkheda, use: location_code = '1444425'
-* If user mentions Boriya, use: location_code = '1444460'
-* If user mentions Katangi, use: location_code = '1444465'
+---
 
-Tariff Category Mapping:
+# Table Selection Rules
 
-* Domestic, Gharelu = LV1
-* Non Domestic, CLF = LV2
-* Street Light, STLT, Water Works, WW, Nagar Nigam = LV3
-* Industrial, IP = LV4
-* Agriculture, Pump = LV5
-* EV Station, Electric Charging = LV6
+## consumer_nlpdata
 
-Tariff Rules:
+Use this table whenever the question contains:
 
-* Never search tariff names directly.
-* Always convert tariff names to tariff_category.
-* Domestic or Gharelu → tariff_category = 'LV1'
-* Non Domestic or CLF → tariff_category = 'LV2'
-* Street Light, STLT, Water Works, WW, Nagar Nigam → tariff_category = 'LV3'
-* Industrial or IP → tariff_category = 'LV4'
-* Agriculture or Pump → tariff_category = 'LV5'
-* EV Station or Electric Charging → tariff_category = 'LV6'
-* if tariff names with temporary or TC → connection_type='TEMPORARY' 
+* consumer
+* consumer list
+* consumer details
+* consumer count
+* consumer number
+* consumer name
+* consumer status
+* mobile number
+* address
+* bill
+* net bill
+* arrear
+* billed unit
+* tariff
+* location code
 
-Query Construction Rules:
+Columns
 
-* If multiple filters are mentioned, combine them using AND.
-* Use COUNT(*) for total/count questions.
-* Use SUM(net_bill) for bill total questions.
-* Use SUM(arrear) for arrear total questions.
-* if tariff name with temporary or tc word then search in tariff_code and connection_type
-* Use ORDER BY and LIMIT when user asks for top/highest/lowest records.
-* Generate only executable MySQL query output.
-
-
-Table: consumer_nlpdata
-
-Columns:
 consumer_no
 division
 location_code
@@ -108,9 +98,27 @@ net_bill
 arrear
 billed_unit
 
-Table: patandfrdtr
-Description : FEEDER WISE DTR DETAIL, DTR MEANS TRANSFORMER,SS MEANS SUBSTATION, DC MEANS DC NAME WITH COORDINATE LATITUDE LONGITUDE
-Columns:
+---
+
+## patandfrdtr
+
+Use this table whenever the question contains:
+
+* feeder
+* feeder list
+* feeder details
+* transformer
+* DTR
+* substation
+* SS
+* DC
+* DC name
+* feeder capacity
+* pole latitude
+* pole longitude
+
+Columns
+
 DIVCODE
 DCID
 DC
@@ -125,108 +133,250 @@ POLELAT
 POLELONG
 FDRTYPE
 
-Rules:
+---
 
-1. Return only a valid MySQL query.
-2. Never return explanations, comments, markdown, or code fences.
-3. Never use JOIN, INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL JOIN, CROSS JOIN, or any subquery involving multiple tables.
-4. Use only one table per query.
-5. Use LIKE with wildcards (%) when searching feeder names (FDR, FEEDER_NAME).
-6. Use LIKE with wildcards (%) when searching transformer names (DTR, DTR_NAME).
-7. Use LIKE with wildcards (%) when searching DC names (DC, DC_NAME).
-8. Use LIKE with wildcards (%) when searching substation names (SS, SUBSTATION_NAME, SUB STATION).
-9. Use LIKE with wildcards (%) when searching consumer names.
-10. Use exact match (=) only for codes and IDs such as consumer_no, FDRID, DTRID, location_code, tariff_category.
+## vigillance
 
+Use this table whenever the question contains:
 
-Table: vigillance
-description: vigillance means enforcement detail or panchnama
+* vigillance
+* vigilance
+* panchnama
+* inspection
+* enforcement
+* theft case
+* billed amount
+* payment received
+* load
+* compounding
+* civil liability
+* court rebate
 
-Columns:
+Columns
 
-* circle
+circle
+division
+dc
+panchnama_number
+inspection_date
+emp_cd
+person_name
+person_address
+mobile_no
+father_name
+vigillance_team
+billed_unit
+total_calculated_load_in_kw
+energy_charge
+fixed_charge
+fca
+duty
+civil_lia_amount
+compounding_amount
+court_rebate
+billed_amount
+payment_received
+case_name
+tariff_name
+
+---
+
+# Search Rules
+
+Use LIKE '%value%' for
+
+* consumer_name
+* address1
+* address2
 * division
-* dc
-* panchnama_number
-* inspection_date
-* emp_cd
+* DC
+* SS
+* FDR
+* DTR
 * person_name
-* person_address
-* mobile_no
 * father_name
+* person_address
 * vigillance_team
-* billed_unit
-* total_calculated_load_in_kw
-* energy_charge
-* fixed_charge
-* fca
-* duty
-* civil_lia_amount
-* compounding_amount
-* court_rebate
-* billed_amount
-* payment_received
-* case_name
 * tariff_name
+* case_name
+* panchnama_number
 
-Rules:
+Use exact match (=) for
 
-1. Return only MySQL SELECT queries.
-2. Never generate INSERT, UPDATE, DELETE, DROP, ALTER, CREATE or TRUNCATE queries.
-3. Use LIKE '%value%' for text searches.
-4. Search person names in column person_name.
-5. Search father names in column father_name.
-6. Search mobile numbers in column mobile_no.
-7. Search addresses in column person_address.
-8. Search employee codes in column emp_cd.
-9. Search vigillance team names in column vigillance_team.
-10. Search tariff names in column tariff_name.
-11. Search case names in column case_name.
-12. Search panchnama numbers in column panchnama_number.
-13. Use inspection_date for date filtering.
-14. For billed amount use column billed_amount.
-15. For payment received use column payment_received.
-16. For billed units use column billed_unit.
-17. For load use column total_calculated_load_in_kw.
-18. For energy charge use column energy_charge.
-19. For fixed charge use column fixed_charge.
-20. For FCA use column fca.
-21. For duty use column duty.
-22. For civil liability amount use column civil_lia_amount.
-23. For compounding amount use column compounding_amount.
-24. For court rebate use column court_rebate.
-25. 3. Use LIKE '%value%' for panchnama number searches.
+consumer_no
+location_code
+group_no
+rd_no
+DCID
+DIVCODE
+FDRID
+DTRID
+emp_cd
 
-Examples:
+---
 
-User: Show all consumers from Patan division
-SQL:
-SELECT * FROM vigillance
-WHERE division LIKE '%Patan%';
+# Aggregate Rules
 
-User: Show all consumers from Patan1 dc or patan 1 dc
-SQL:
-SELECT * FROM vigillance
-WHERE dc LIKE '%patan-1%';
+Consumer count
 
-User: Show billed amount greater than 50000
-SQL:
-SELECT * FROM vigillance
-WHERE billed_amount > 50000;
+SELECT COUNT(*)
 
-User: Show payment received less than 10000
-SQL:
-SELECT * FROM vigillance
-WHERE payment_received < 10000;
+Bill total
 
-User: Show consumer mobile number 9876543210
-SQL:
-SELECT * FROM vigillance
-WHERE mobile_no LIKE '%9876543210%';
+SUM(net_bill)
 
-User: Show panchanama between 01-04-2024 to 01-04-2025
-SQL:
-SELECT * FROM vigillance WHERE inspection_date BETWEEN '01-04-2024' AND '01-04-2025'
+Arrear total
+
+SUM(arrear)
+
+Unit total
+
+SUM(billed_unit)
+
+Vigillance billed amount
+
+SUM(billed_amount)
+
+Payment received
+
+SUM(payment_received)
+
+Energy charge
+
+SUM(energy_charge)
+
+---
+
+# Comparison Rules
+
+greater than
+
+>
+
+less than
+
+<
+
+greater than or equal
+
+> =
+
+less than or equal
+
+<=
+
+between
+
+BETWEEN
+
+---
+
+# Location Mapping
+
+Patan1
+Patan 1
+Patan-1
+
+location_code='1444410'
+
+Patan2
+Patan 2
+Patan-2
+
+location_code='1444415'
+
+Shahpura
+
+location_code='1444420'
+
+Belkheda
+
+location_code='1444425'
+
+Boriya
+
+location_code='1444460'
+
+Katangi
+
+location_code='1444465'
+
+Never search these names directly in consumer_nlpdata.
+
+Always convert them to location_code.
+
+---
+
+# Tariff Mapping
+
+Domestic
+Gharelu
+
+LV1
+
+Non Domestic
+CLF
+
+LV2
+
+Street Light
+STLT
+Water Works
+WW
+Nagar Nigam
+
+LV3
+
+Industrial
+IP
+
+LV4
+
+Agriculture
+Pump
+
+LV5
+
+EV Station
+Charging
+
+LV6
+
+Always convert tariff names to tariff_category.
+
+---
+
+# Important Rules
+
+If the question contains
+
+consumer
+
+always use consumer_nlpdata.
+
+If the question contains
+
+feeder
+transformer
+substation
+DC details
+
+always use patandfrdtr.
+
+If the question contains
+
+panchnama
+inspection
+vigillance
+enforcement
+
+always use vigillance.
+
+Never use JOIN.
+
+Never use multiple tables.
+
+Generate only one SQL query.
 
 Question:
 {question}
