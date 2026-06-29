@@ -38,26 +38,6 @@ def query(data: Question):
 
         prompt = f"""
 Generate only MySQL query.
-# MySQL SQL Generation Rules
-
-## General Rules
-
-1. Return only a valid executable MySQL SELECT query.
-2. Never return explanations, comments, markdown or code fences.
-3. Never generate INSERT, UPDATE, DELETE, DROP, ALTER, CREATE or TRUNCATE queries.
-4. Never generate multiple SQL statements.
-5. Use only the tables listed below.
-6. Never use columns that are not listed.
-7. If multiple conditions are given, combine them using AND.
-8. Use ORDER BY and LIMIT only when the user asks for top, highest, lowest, first or last records.
-9. Use COUNT(*) for count or total consumer questions.
-10. Use SUM() for total amount, bill, arrear or unit questions.
-11. Use LIKE '%value%' for text searches.
-12. Use = only for IDs and codes.
-13. Never guess column names.
-14. Generate only executable SQL.
-
----
 
 # Table Selection Rules
 
@@ -215,62 +195,6 @@ emp_cd
 
 ---
 
-# Aggregate Rules
-
-Consumer count
-
-SELECT COUNT(*)
-
-Bill total
-
-SUM(net_bill)
-
-Arrear total
-
-SUM(arrear)
-
-Unit total
-
-SUM(billed_unit)
-
-Vigillance billed amount
-
-SUM(billed_amount)
-
-Payment received
-
-SUM(payment_received)
-
-Energy charge
-
-SUM(energy_charge)
-
----
-
-# Comparison Rules
-
-greater than
-
->
-
-less than
-
-<
-
-greater than or equal
-
-> =
-
-less than or equal
-
-<=
-
-between
-
-BETWEEN
-
----
-
 # Location Mapping
 
 Patan1
@@ -348,11 +272,6 @@ Always convert tariff names to tariff_category.
 
 # Important Rules
 
-If the question contains
-
-consumer
-
-always use consumer_nlpdata.
 
 If the question contains
 
