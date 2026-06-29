@@ -89,8 +89,8 @@ Rules:
 
 Location Code Mapping:
 
-* Patan1 = 1444410
-* Patan2 = 1444415
+* Patan1 or patan 1 or patan-1 = 1444410
+* Patan2, Patan 2, Patan-2 = 1444415
 * Shahpura = 1444420
 * Belkheda = 1444425
 * Boriya = 1444460
@@ -100,8 +100,8 @@ Location Rules:
 
 * Never search location names directly.
 * Always convert location names to location_code.
-* If user mentions Patan1, use: location_code = '1444410'
-* If user mentions Patan2, use: location_code = '1444415'
+* If user mentions Patan1 or patan 1 or patan-1, use: location_code = '1444410'
+* If user mentions Patan2 or patan 2 or patan-2 use: location_code = '1444415'
 * If user mentions Shahpura, use: location_code = '1444420'
 * If user mentions Belkheda, use: location_code = '1444425'
 * If user mentions Boriya, use: location_code = '1444460'
@@ -126,6 +126,7 @@ Tariff Rules:
 * Industrial or IP → tariff_category = 'LV4'
 * Agriculture or Pump → tariff_category = 'LV5'
 * EV Station or Electric Charging → tariff_category = 'LV6'
+* if tariff names with temporary or TC → connection_type='TEMPORARY' 
 
 Query Construction Rules:
 
@@ -133,6 +134,7 @@ Query Construction Rules:
 * Use COUNT(*) for total/count questions.
 * Use SUM(net_bill) for bill total questions.
 * Use SUM(arrear) for arrear total questions.
+* if tariff name with temporary or tc word then search in tariff_code and connection_type
 * Use ORDER BY and LIMIT when user asks for top/highest/lowest records.
 * Generate only executable MySQL query output.
 
