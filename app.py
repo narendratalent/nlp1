@@ -38,55 +38,6 @@ def query(data: Question):
 
         prompt = f"""
 Generate only MySQL query.
-
-Table: consumer_nlpdata
-
-Columns:
-consumer_no
-division
-location_code
-group_no
-rd_no
-consumer_name
-consumer_status
-tariff_category
-address1
-address2
-mobile_no
-net_bill
-arrear
-billed_unit
-
-Table: patandfrdtr
-Description : FEEDER WISE DTR DETAIL, DTR MEANS TRANSFORMER,SS MEANS SUBSTATION, DC MEANS DC NAME WITH COORDINATE LATITUDE LONGITUDE
-Columns:
-DIVCODE
-DCID
-DC
-SS
-FDR
-FDRID
-DTRID
-DTR
-DTRCP
-DTRCAP
-POLELAT
-POLELONG
-FDRTYPE
-
-Rules:
-
-1. Return only a valid MySQL query.
-2. Never return explanations, comments, markdown, or code fences.
-3. Never use JOIN, INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL JOIN, CROSS JOIN, or any subquery involving multiple tables.
-4. Use only one table per query.
-5. Use LIKE with wildcards (%) when searching feeder names (FDR, FEEDER_NAME).
-6. Use LIKE with wildcards (%) when searching transformer names (DTR, DTR_NAME).
-7. Use LIKE with wildcards (%) when searching DC names (DC, DC_NAME).
-8. Use LIKE with wildcards (%) when searching substation names (SS, SUBSTATION_NAME, SUB STATION).
-9. Use LIKE with wildcards (%) when searching consumer names.
-10. Use exact match (=) only for codes and IDs such as consumer_no, FDRID, DTRID, location_code, tariff_category.
-
 Location Code Mapping:
 
 * Patan1 or patan 1 or patan-1 = 1444410
@@ -137,6 +88,56 @@ Query Construction Rules:
 * if tariff name with temporary or tc word then search in tariff_code and connection_type
 * Use ORDER BY and LIMIT when user asks for top/highest/lowest records.
 * Generate only executable MySQL query output.
+
+
+Table: consumer_nlpdata
+
+Columns:
+consumer_no
+division
+location_code
+group_no
+rd_no
+consumer_name
+consumer_status
+tariff_category
+address1
+address2
+mobile_no
+net_bill
+arrear
+billed_unit
+
+Table: patandfrdtr
+Description : FEEDER WISE DTR DETAIL, DTR MEANS TRANSFORMER,SS MEANS SUBSTATION, DC MEANS DC NAME WITH COORDINATE LATITUDE LONGITUDE
+Columns:
+DIVCODE
+DCID
+DC
+SS
+FDR
+FDRID
+DTRID
+DTR
+DTRCP
+DTRCAP
+POLELAT
+POLELONG
+FDRTYPE
+
+Rules:
+
+1. Return only a valid MySQL query.
+2. Never return explanations, comments, markdown, or code fences.
+3. Never use JOIN, INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL JOIN, CROSS JOIN, or any subquery involving multiple tables.
+4. Use only one table per query.
+5. Use LIKE with wildcards (%) when searching feeder names (FDR, FEEDER_NAME).
+6. Use LIKE with wildcards (%) when searching transformer names (DTR, DTR_NAME).
+7. Use LIKE with wildcards (%) when searching DC names (DC, DC_NAME).
+8. Use LIKE with wildcards (%) when searching substation names (SS, SUBSTATION_NAME, SUB STATION).
+9. Use LIKE with wildcards (%) when searching consumer names.
+10. Use exact match (=) only for codes and IDs such as consumer_no, FDRID, DTRID, location_code, tariff_category.
+
 
 Table: vigillance
 description: vigillance means enforcement detail or panchnama
